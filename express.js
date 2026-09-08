@@ -5,21 +5,21 @@ const express = require("express");
 
 const app = express();
 
-app.get('/', (req,res) => {
-    return res.send("hello from home page")
-})
+app.get("/", (req, res) => {
+    return res.send("hello from home page");
+});
 
-app.get('/about', (req,res) => {
-    return res.send( `hello ${req.query.name}`)
-})
+app.get("/about", (req, res) => {
+    return res.send(`hello ${req.query.name}`);
+});
 
 
-function  myHandler (req, res) {
-if (req.url === "/favicon.ico") return res.end();
+function myHandler(req, res) {
+    if (req.url === "/favicon.ico") return res.end();
 
     const log = `${Date.now()}: ${req.method} ${req.url} New Req Received\n`;
 
-    const myUrl = url.parse(req.url, true);
+    const myUrl = new URL(req.url, `http://${req.headers.host}`);
 
     fs.appendFile("log.txt", log, (err, data) => {
         switch (myUrl.pathname) {
@@ -28,12 +28,12 @@ if (req.url === "/favicon.ico") return res.end();
                 break;
 
             case "/about":
-                const username = myUrl.query.myname;
+                const username = myUrl.searchParams.get("myname");
                 res.end(`Hi, ${username}`);
                 break;
 
             case "/search":
-                const search = myUrl.query.search_query;
+                const search = myUrl.searchParams.get("search_query");
                 res.end("Here are your results for " + search);
                 break;
 
@@ -51,13 +51,3 @@ if (req.url === "/favicon.ico") return res.end();
         }
     });
 }
-
-
-
-
-    
-
-
-app.listen(8000, () => {
-    console.log("Server Started");
-});

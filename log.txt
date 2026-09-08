@@ -1,0 +1,28 @@
+
+
+versioning 
+
+1st part -> 4
+2nd part -> 18
+3rd part -> 2
+
+3rd part (last part ) -> minor fixes(optional)
+latest -> 4.18.2
+
+2nd part - recomended bug fix (security fix)
+latest -> 4.19.1
+
+1st part - major release - major bug fix
+latest -> 5.18.2
+
+express = ^5.2.1 
+5th version 
+
+^4.18.2 | 4.18.2 -> 5.0.0 |
+
+^5.2.1
+
+^ - Install all Recommended and minor fixes Autometically  
+^ this is called caret symbol 
+~ iska mtlb h last beat ko change karo sirf 
+aur agar blanck rhe to iska mtlb h last fix h 
