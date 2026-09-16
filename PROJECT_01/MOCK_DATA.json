@@ -1,13 +1,5 @@
 [
     {
-        "id": 1,
-        "first_name": "Ellie",
-        "last_name": "Basford",
-        "email": "ebasford0@twitpic.com",
-        "gender": "Female",
-        "job_title": "Web Developer III"
-    },
-    {
         "id": 2,
         "first_name": "Bernete",
         "last_name": "Sweett",
@@ -7998,5 +7990,29 @@
         "email": "sbassinghamrr@constantcontact.com",
         "gender": "Female",
         "job_title": "Computer Systems Analyst II"
+    },
+    {
+        "first_name": "subodh",
+        "last_name": "soni",
+        "email": "soni@gmail.com",
+        "gender": "male",
+        "job_title": "soft dev",
+        "id": 1001
+    },
+    {
+        "first_name": "golu",
+        "last_name": "kumar",
+        "email": "golu@gmail.com",
+        "gender": "male",
+        "job_title": "soft dev engg",
+        "id": 1002
+    },
+    {
+        "first_name": "subham",
+        "last_name ": "rameshwaram",
+        "email": "subhan@gmail.com",
+        "gender": "male",
+        "job_title": "Data anylyst",
+        "id": 1002
     }
 ]
