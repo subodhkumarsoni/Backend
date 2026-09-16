@@ -5,8 +5,24 @@ const users = require("./MOCK_DATA.json");
 const app = express();
 const PORT = 8000;
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+
+// Middleware -- Pluggin
+app.use(express.urlencoded({ extended: false}));
+
+app.use((req, res, next) => {
+    fs.appendFile('log.txt', `${Date.now()}:${req.ip}: ${req.method}: ${req.path}\n`, (err, data) => {
+        next(); 
+    })
+    
+   
+});
+
+app.use((req, res, next) => {
+    console.log("Hello from middleware 2", );
+    // return res.end("Hey");
+    next();
+    
+});
 
 // ROUTES
 
@@ -21,10 +37,17 @@ app.get("/users", (req, res) => {
 });
 
 // REST API
+app.get("/api/users", (req,res) => {
+    // console.log(request.headers)
+    res.setHeader("X-myName", "Subodh soni") // custom header
+    // always add X to custom headers
+    return res.json(users)
+});
 
 app
     .route("/api/users/:id")
     .get((req, res) => {
+
         const id = Number(req.params.id);
 
         const user = users.find((user) => user.id === id);
