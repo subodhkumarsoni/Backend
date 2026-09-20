@@ -1,27 +1,33 @@
+require("dotenv").config();
+
 const express = require("express");
 const fs = require("fs");
 const users = require("./MOCK_DATA.json");
+const connectDB = require("./db");
 
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT;
 
 
-// Middleware -- Pluggin
-app.use(express.urlencoded({ extended: false}));
+// Middleware -- Plugin
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 app.use((req, res, next) => {
-    fs.appendFile('log.txt', `${Date.now()}:${req.ip}: ${req.method}: ${req.path}\n`, (err, data) => {
-        next(); 
-    })
-    
-   
+    fs.appendFile(
+        "log.txt",
+        `${Date.now()}:${req.ip}: ${req.method}: ${req.path}\n`,
+        (err, data) => {
+            next();
+        }
+    );
 });
 
 app.use((req, res, next) => {
-    console.log("Hello from middleware 2", );
+    console.log("Hello from middleware 2",);
     // return res.end("Hey");
     next();
-    
+
 });
 
 // ROUTES
@@ -37,7 +43,7 @@ app.get("/users", (req, res) => {
 });
 
 // REST API
-app.get("/api/users", (req,res) => {
+app.get("/api/users", (req, res) => {
     // console.log(request.headers)
     res.setHeader("X-myName", "Subodh soni") // custom header
     // always add X to custom headers
@@ -51,6 +57,7 @@ app
         const id = Number(req.params.id);
 
         const user = users.find((user) => user.id === id);
+        if (!user) return res.status(404).json({ error: 'user not found' })
 
         return res.json(user);
     })
@@ -135,6 +142,9 @@ app.get("/api/users", (req, res) => {
 
 app.post("/api/users", (req, res) => {
     const body = req.body;
+    if (!body || !body.first_name || !body.last_name || !body.email || !body.gender || !body.job_title) {
+        return res.status(400).json({ msg: 'All feild are required' })
+    }
 
     console.log("Body", body);
 
@@ -147,7 +157,7 @@ app.post("/api/users", (req, res) => {
         "./MOCK_DATA.json",
         JSON.stringify(users),
         (err, data) => {
-            return res.json({
+            return res.status(200).json({
                 status: "success",
                 id: users.length
             });
@@ -158,6 +168,18 @@ app.post("/api/users", (req, res) => {
 
 // SERVER
 
-app.listen(PORT, () => {
-    console.log(`Server Started at port: ${PORT}`);
-});
+
+async function startServer() {
+    try {
+        const db = await connectDB();
+
+        app.listen(PORT, () => {
+            console.log(`Server Started at port: ${PORT}`);
+        });
+
+    } catch (error) {
+        console.error("MongoDB connection error:", error);
+    }
+}
+
+startServer();
